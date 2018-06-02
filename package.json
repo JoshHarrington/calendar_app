@@ -2,8 +2,10 @@
   "name": "calendar-app",
   "version": "0.1.0",
   "private": true,
-  "homepage" : "https://joshharrington.github.io/calendar_app/",
+  "homepage": "https://joshharrington.github.io/calendar_app/",
+  "branch": "gh-pages",
   "dependencies": {
+    "gh-pages": "^1.2.0",
     "moment": "^2.19.1",
     "prop-types": "^15.6.0",
     "react": "^16.4.0",
@@ -16,6 +18,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   }
 }
