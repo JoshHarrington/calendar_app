@@ -2,27 +2,33 @@
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.calendar-display {
+  height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: stretch;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.calendar-display div {
+  flex-basis: 14.2857%;
+  background-color: beige;
+  border:1px solid #ccc;
+  padding: 7px;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  text-align: left;
 }
 
-.App-title {
-  font-size: 1.5em;
+.calendar-display div[data-previous-month] {
+  background-color: white;
 }
 
-.App-intro {
-  font-size: large;
+.calendar-display div[data-next-month] {
+  background-color: white;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.calendar-display span {
+  flex-basis: calc(100% - 14px);
 }
