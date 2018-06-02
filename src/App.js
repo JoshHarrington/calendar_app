@@ -58,8 +58,6 @@ class App extends Component {
       );
     }
 
-    console.log( this.state );
-
     const years = [
       2010,
       2011,

@@ -16,12 +16,6 @@ class Calendar extends Component {
 			year = moment().year();
 		}
 
-		console.log("this.props.month " + month);
-    console.log("this.props.year " + year);
-
-    console.log("current month " + moment().month());
-		console.log("current year" + moment().year());
-
     const currentDate = moment().year(year).month(month);
     const numDaysInCurrentMonth = currentDate.daysInMonth();
     const startDayOfMonth = currentDate.date(1).day();
@@ -37,8 +31,8 @@ class Calendar extends Component {
     const numDaysMonthTotalPlusBefore = numDaysInCurrentMonth + startDayOfMonth;
     const numDaysMonthTotalPlusExtra = numDaysInCurrentMonth + numDaysBeforeAfterMonthExtra;
     const lastDateOfPreviousMonth = currentDate.date(0).date();
-    const firstSundayOfMonth = lastDateOfPreviousMonth - startDayOfMonth + 1;
-    console.log(numRemainderDaysEndOfMonth);
+		const firstSundayOfMonth = lastDateOfPreviousMonth - startDayOfMonth + 1;
+
     const dayOfWeekSpecial = function (d) {
       if (d === 0) {
         return "Sunday"
