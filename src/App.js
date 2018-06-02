@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-// import Moment from 'react-moment';
 import moment from 'moment';
-// import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
@@ -147,7 +145,6 @@ class App extends Component {
       );
     }
 
-
     const years = [
       2010,
       2011,
@@ -173,7 +170,6 @@ class App extends Component {
         <option value={years[i]} key={i}>{years[i]}</option>
       );
     }
-
 
     return (
       <div className="App">
