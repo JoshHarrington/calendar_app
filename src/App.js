@@ -37,7 +37,7 @@ class App extends Component {
     const numWeeksMinusFirstWeekIfNotWhole = Math.floor(numDaysInMonthMinusFirstWeek / 7);
     const numRemainderDaysEndOfMonth = (numDaysInMonthMinusFirstWeek) % (numWeeksMinusFirstWeekIfNotWhole * 7);
     let numDaysBeforeAfterMonthExtra = 0;
-    if (numRemainderDaysEndOfMonth == 0) {
+    if (numRemainderDaysEndOfMonth === 0) {
       numDaysBeforeAfterMonthExtra = startDayOfMonth;
     } else {
       numDaysBeforeAfterMonthExtra = startDayOfMonth + (7 - numRemainderDaysEndOfMonth);
@@ -65,12 +65,19 @@ class App extends Component {
       }
     }
 
-    console.log(this.state.month);
-    console.log(this.state.year);
+    console.log("this.state.month " + this.state.month);
+    console.log("this.state.year " + this.state.year);
+
+    console.log("current month " + moment().month());
+    console.log("current year" + moment().year());
 
     let cells = [];
     let d = 0;
     let j = 1;
+    const currentMonth = moment().year(this.state.year).month(this.state.month).format("MMMM");
+    const nextMonth = moment().year(this.state.year).month(this.state.month + 1).format("MMMM");
+    let nextMonthNamed = false;
+    let currentMonthNamed = false;
 
     for (var i = 0; i < numDaysMonthTotalPlusExtra; i++) {
       if (i < startDayOfMonth) {
@@ -79,17 +86,35 @@ class App extends Component {
           <span>{firstSundayOfMonth + i}</span>
         </div>);
       } else if (i > numDaysMonthTotalPlusBefore - 1) {
-        cells.push(<div data-next-month="true" data-date={j} key={i}>
-          <span>{dayOfWeekSpecial(d)}</span>
-          <span>{j}</span>
-        </div>);
+        if (nextMonthNamed === false) {
+          cells.push(<div data-next-month="true" data-date={j} key={i}>
+            <span>{dayOfWeekSpecial(d)}</span>
+            <span>{j}</span>
+            <span>{nextMonth}</span>
+          </div>);
+        } else {
+          cells.push(<div data-next-month="true" data-date={j} key={i}>
+            <span>{dayOfWeekSpecial(d)}</span>
+            <span>{j}</span>
+          </div>);
+        }
         j++;
+        nextMonthNamed = true;
       } else {
         const dateInMonth = i - startDayOfMonth + 1;
-        cells.push(<div data-current-month="true" data-date={dateInMonth} key={i}>
-          <span>{dayOfWeekSpecial(d)}</span>
-          <span>{dateInMonth}</span>
-        </div>);
+        if (currentMonthNamed === false) {
+          cells.push(<div data-current-month="true" data-date={dateInMonth} key={i}>
+            <span>{dayOfWeekSpecial(d)}</span>
+            <span>{dateInMonth}</span>
+            <span>{currentMonth}</span>
+          </div>);
+        } else {
+          cells.push(<div data-current-month="true" data-date={dateInMonth} key={i}>
+            <span>{dayOfWeekSpecial(d)}</span>
+            <span>{dateInMonth}</span>
+          </div>);
+        }
+        currentMonthNamed = true;
       }
       if (d < 6) {
         d++;
@@ -99,22 +124,65 @@ class App extends Component {
 
     }
 
+    const monthNames = [
+      "January",
+      "Feburary",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ];
+
+    let monthOptions = [];
+
+    for (var i = 0; i < 12; i ++) {
+      monthOptions.push(
+        <option value={i} key={i}>{monthNames[i]}</option>
+      );
+    }
+
+
+    const years = [
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ];
+
+    let yearOptions = [];
+
+    for (var i = 0; i < years.length; i ++) {
+      yearOptions.push(
+        <option value={years[i]} key={i}>{years[i]}</option>
+      );
+    }
+
+
     return (
       <div className="App">
       <form>
-        <select name="month" id="month-num" onChange={this.handleInputChange}>
-          <option value="0">January</option>
-          <option value="1">Feburary</option>
-          <option value="2">March</option>
-          <option value="3">April</option>
+        <select name="month" id="month-num" defaultValue={this.state.month} onChange={this.handleInputChange}>
+          {monthOptions}
         </select>
-        <select name="year" id="year-num" onChange={this.handleInputChange}>
-          <option value="2015">2015</option>
-          <option value="2016">2016</option>
-          <option value="2017">2017</option>
-          <option value="2018">2018</option>
-          <option value="2019">2019</option>
-          <option value="2020">2020</option>
+        <select name="year" id="year-num" defaultValue={this.state.year} onChange={this.handleInputChange}>
+          {yearOptions}
         </select>
       </form>
         <div className="calendar-display">{cells}</div>
