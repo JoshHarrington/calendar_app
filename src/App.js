@@ -96,12 +96,12 @@ class App extends Component {
         </form>
         <Switch>
           <Route
-            exact path='/' render={() => (
+            exact path='/calendar_app/' render={() => (
               <Calendar/>
             )}
             />
           <Route
-            path='/:month/:year'
+            path='/calendar_app/:month/:year'
             render={(props) => (
               <Calendar month={this.state.month} year={this.state.year} />
             )}
