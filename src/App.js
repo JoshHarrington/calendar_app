@@ -30,7 +30,7 @@ class App extends Component {
   }
 
   triggerHistoryUpdate() {
-    this.props.history.push("/"+this.state.month+ "/"+this.state.year);
+    this.props.history.push("/calendar_app/"+this.state.month+ "/"+this.state.year);
   }
 
   render() {
