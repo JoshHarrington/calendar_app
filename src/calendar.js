@@ -6,7 +6,7 @@ class Calendar extends Component {
 
 
   render() {
-		let month = '';
+    let month = '';
 		let year = '';
 		if (this.props.month && this.props.year) {
 			month = this.props.month;

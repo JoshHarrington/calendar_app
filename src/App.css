@@ -3,7 +3,7 @@
 }
 
 .calendar-display {
-  height: 100vh;
+  height: calc(100vh - 40px);
   display: flex;
   flex-wrap: wrap;
   align-content: stretch;
@@ -31,4 +31,10 @@
 
 .calendar-display span {
   flex-basis: calc(100% - 14px);
+}
+
+.navBar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
 }

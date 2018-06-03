@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, withRouter } from 'react-router-dom';
 import moment from 'moment';
 import './App.css';
 import {Calendar} from './calendar.js';
@@ -7,17 +7,35 @@ import {Calendar} from './calendar.js';
 class App extends Component {
 
   constructor(props) {
-    const todayMonth = moment().month();
-    const todayYear = moment().year();
     super(props);
-    this.state = {
-      month: todayMonth,
-      year: todayYear
+
+    const currentMonth = moment().month();
+    const currentYear = moment().year();
+
+    let path = this.props.location.pathname;
+    if ((path === '') || (path === '/') || (path === '/calendar_app') || (path === '/calendar_app/') ) {
+        this.state = {
+          month: currentMonth,
+          year: currentYear
+        }
+        this.props.history.push("/calendar_app/" + currentMonth + "/"+ currentYear);
+    } else {
+      path = path.replace(/\/calendar_app\/*/g, '');
+      path = path.split("/");
+
+      this.state = {
+        month: path[0],
+        year: path[1],
+      };
     }
-    this.handleInputChange = this.handleInputChange.bind(this);
+
+    this.handleInputChangeMonth = this.handleInputChangeMonth.bind(this);
+    this.handleInputChangeYear = this.handleInputChangeYear.bind(this);
   }
 
-  handleInputChange(event) {
+  handleInputChangeMonth(event) {
+    const currentYear = moment().year();
+
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
@@ -26,11 +44,22 @@ class App extends Component {
       [name]: value
     });
 
-    this.triggerHistoryUpdate();
+    this.props.history.push("/calendar_app/" + value + "/"+ (this.state.year || currentYear));
+
   }
 
-  triggerHistoryUpdate() {
-    this.props.history.push("/calendar_app/"+this.state.month+ "/"+this.state.year);
+  handleInputChangeYear(event) {
+    const currentMonth = moment().month();
+
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+
+    this.props.history.push("/calendar_app/" + (this.state.month || currentMonth) + "/" + value);
   }
 
   render() {
@@ -84,30 +113,52 @@ class App extends Component {
       );
     }
 
+
+    const currentMonth = this.state.month;
+    const currentYear = this.state.year;
+
+    const previousMonth = moment().year(currentYear).month(currentMonth).subtract(1, 'months');
+    const previousMonth_output = previousMonth.format('M') - 1;
+    const previousMonth_outputYear = previousMonth.format('YYYY');
+    const nextMonth = moment().year(currentYear).month(currentMonth).add(1, 'months');
+    const nextMonth_output = nextMonth.format('M') - 1;
+    const nextMonth_outputYear = nextMonth.format('YYYY');
+
     return (
-      <div className="App">
-        <form>
-          <select name="month" id="month-num" defaultValue={this.state.month} onChange={this.handleInputChange}>
-            {monthOptions}
-          </select>
-          <select name="year" id="year-num" defaultValue={this.state.year} onChange={this.handleInputChange}>
-            {yearOptions}
-          </select>
-        </form>
-        <Switch>
-          <Route
-            exact path='/calendar_app/' render={() => (
-              <Calendar/>
-            )}
-            />
-          <Route
-            path='/calendar_app/:month/:year'
-            render={(props) => (
-              <Calendar month={this.state.month} year={this.state.year} />
-            )}
-            />
-        </Switch>
-      </div>
+      <Router>
+        <div className="App">
+          <div className="navBar">
+            <a href={'/calendar_app/' + previousMonth_output +'/'+ previousMonth_outputYear}>Previous Month</a>
+            <form>
+              <select name="month" id="month-num" defaultValue={this.state.month} onChange={this.handleInputChangeMonth}>
+                {monthOptions}
+              </select>
+              <select name="year" id="year-num" defaultValue={this.state.year} onChange={this.handleInputChangeYear}>
+                {yearOptions}
+              </select>
+            </form>
+            <a href={'/calendar_app/' + nextMonth_output +'/'+ nextMonth_outputYear}>Next Month</a>
+          </div>
+          <Switch>
+            <Route
+              exact path='/calendar_app/' render={() => (
+                <Calendar/>
+              )}
+              />
+            <Route
+              exact path='/' render={() => (
+                <Calendar/>
+              )}
+              />
+            <Route
+              path='/calendar_app/:month/:year'
+              render={(props) => (
+                <Calendar month={this.state.month} year={this.state.year} />
+              )}
+              />
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }
