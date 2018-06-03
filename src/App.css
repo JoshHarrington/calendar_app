@@ -7,12 +7,15 @@
   display: flex;
   flex-wrap: wrap;
   align-content: stretch;
+  border:1px solid #ccc;
+  border-width: 0 1px 1px 0;
 }
 
 .calendar-display div {
   flex-basis: 14.2857%;
-  background-color: beige;
+  background-color: white;
   border:1px solid #ccc;
+  border-width: 1px 0 0 1px;
   padding: 7px;
   display: flex;
   justify-content: flex-start;
@@ -22,11 +25,11 @@
 }
 
 .calendar-display div[data-previous-month] {
-  background-color: white;
+  background-color: rgb(243, 243, 243);
 }
 
 .calendar-display div[data-next-month] {
-  background-color: white;
+  background-color: rgb(243, 243, 243);
 }
 
 .calendar-display span {

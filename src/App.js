@@ -31,6 +31,7 @@ class App extends Component {
 
     this.handleInputChangeMonth = this.handleInputChangeMonth.bind(this);
     this.handleInputChangeYear = this.handleInputChangeYear.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleInputChangeMonth(event) {
@@ -60,6 +61,50 @@ class App extends Component {
     });
 
     this.props.history.push("/calendar_app/" + (this.state.month || currentMonth) + "/" + value);
+  }
+
+  handleClick(event) {
+    event.preventDefault();
+    const target = event.target;
+    let href = target.href;
+    let mutatedHref = href
+
+    mutatedHref = mutatedHref.replace(/.*\/calendar_app\/*/g, '');
+    mutatedHref = mutatedHref.split("/");
+
+    const month = mutatedHref[0];
+    const year = mutatedHref[1];
+
+    this.setState({
+      month: month,
+      year: year,
+    });
+
+    href = href.replace(/(.*\/calendar_app\/*)/g, '/calendar_app/')
+    this.props.history.push(href);
+
+    const monthSelect = document.getElementById('month-select');
+    const yearSelect = document.getElementById('year-select');
+
+    monthSelect.value = month;
+    yearSelect.value = year;
+
+
+    let opt = document.createElement('option');
+    opt.value = year;
+    opt.innerHTML = year;
+
+    let yearAdded = false;
+    if ((year < yearSelect.options[0].value) && (yearAdded === false)) {
+      yearSelect.insertBefore(opt,yearSelect.firstChild);
+      yearAdded = true;
+    }
+    if ((year > yearSelect.options[yearSelect.length - 1].value) && (yearAdded === false)){
+      yearSelect.appendChild(opt);
+      yearAdded = true;
+      yearSelect.value = year;
+    }
+
   }
 
   render() {
@@ -128,16 +173,16 @@ class App extends Component {
       <Router>
         <div className="App">
           <div className="navBar">
-            <a href={'/calendar_app/' + previousMonth_output +'/'+ previousMonth_outputYear}>Previous Month</a>
+            <a href={'/calendar_app/' + previousMonth_output +'/'+ previousMonth_outputYear} onClick={this.handleClick}>&lt; Previous Month</a>
             <form>
-              <select name="month" id="month-num" defaultValue={this.state.month} onChange={this.handleInputChangeMonth}>
+              <select name="month" id="month-select" defaultValue={this.state.month} onChange={this.handleInputChangeMonth}>
                 {monthOptions}
               </select>
-              <select name="year" id="year-num" defaultValue={this.state.year} onChange={this.handleInputChangeYear}>
+              <select name="year" id="year-select" defaultValue={this.state.year} onChange={this.handleInputChangeYear}>
                 {yearOptions}
               </select>
             </form>
-            <a href={'/calendar_app/' + nextMonth_output +'/'+ nextMonth_outputYear}>Next Month</a>
+            <a href={'/calendar_app/' + nextMonth_output +'/'+ nextMonth_outputYear} onClick={this.handleClick}>Next Month &gt;</a>
           </div>
           <Switch>
             <Route
