@@ -23,6 +23,9 @@
   align-content: flex-start;
   text-align: left;
 }
+.calendar-display div[data-today="true"] {
+  background-color: rgb(208, 230, 250);
+}
 
 .calendar-display div[data-previous-month] {
   background-color: rgb(243, 243, 243);

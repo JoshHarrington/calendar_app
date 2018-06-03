@@ -55,6 +55,17 @@ class Calendar extends Component {
     let d = 0;
 		let j = 1;
 
+
+    let currentMoment = moment();
+    let currentMomentDay = currentMoment.format('D');
+    let currentMomentMonth = currentMoment.format('MMMM');
+    let currentMomentYear = currentMoment.format('YYYY');
+
+    let currentYear = '';
+    if (this.props.year) {
+      currentYear = this.props.year;
+    }
+
 		let currentMonth = '';
 		let nextMonth = '';
 		if (this.props.month && this.props.year) {
@@ -67,6 +78,7 @@ class Calendar extends Component {
 
     let nextMonthNamed = false;
     let currentMonthNamed = false;
+
 
     for (var i = 0; i < numDaysMonthTotalPlusExtra; i++) {
       if (i < startDayOfMonth) {
@@ -91,14 +103,18 @@ class Calendar extends Component {
         nextMonthNamed = true;
       } else {
         const dateInMonth = i - startDayOfMonth + 1;
+        let today = false;
+        if ((String(dateInMonth) === currentMomentDay) && (currentMonth === currentMomentMonth) && (currentYear === currentMomentYear)) {
+          today = true;
+        }
         if (currentMonthNamed === false) {
-          cells.push(<div data-current-month="true" data-date={dateInMonth} key={i}>
+          cells.push(<div data-current-month="true" data-today={today} data-date={dateInMonth} key={i}>
             <span>{dayOfWeekSpecial(d)}</span>
             <span>{dateInMonth}</span>
             <span>{currentMonth}</span>
           </div>);
         } else {
-          cells.push(<div data-current-month="true" data-date={dateInMonth} key={i}>
+          cells.push(<div data-current-month="true" data-today={today} data-date={dateInMonth} key={i}>
             <span>{dayOfWeekSpecial(d)}</span>
             <span>{dateInMonth}</span>
           </div>);
